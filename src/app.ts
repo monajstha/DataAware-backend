@@ -3,6 +3,8 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import permissionRoute from "@routes/permission.route";
 import trackerRoute from "@routes/tracker.route";
+import sensorRoute from "@routes/sensor.route";
+import datatypeRoute from "@routes/datatype.route";
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.use(
 // Routes
 app.use("/api/permissions", permissionRoute);
 app.use("/api/trackers", trackerRoute);
+app.use("/api/sensors", sensorRoute);
+app.use("/api/datatypes", datatypeRoute);
 
 // Handle all unmatched routes
 app.use((req: Request, res: Response, next: NextFunction) => {
