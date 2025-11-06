@@ -2,6 +2,7 @@ import { errorHandler } from "@middlewares/errorHandler";
 import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import permissionRoute from "@routes/permission.route";
+import trackerRoute from "@routes/tracker.route";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 
 // Routes
 app.use("/api/permissions", permissionRoute);
+app.use("/api/trackers", trackerRoute);
 
 // Handle all unmatched routes
 app.use((req: Request, res: Response, next: NextFunction) => {
