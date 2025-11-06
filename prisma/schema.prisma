@@ -1,14 +1,102 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// Core conceptual building blocks
+
+model Permission {
+  id                    Int                     @id @default(autoincrement())
+  name                  String                  @unique
+  description           String
+  sensitivity           String
+  riskScore             Float
+  dataTypeId            Int?
+  dataType              DataType?               @relation(fields: [dataTypeId], references: [id])
+  economicValue         Float
+  AppCategoryPermission AppCategoryPermission[]
+}
+
+model Tracker {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  description        String
+  riskScore          Float
+  dataTypeId         Int?
+  dataType           DataType?            @relation(fields: [dataTypeId], references: [id])
+  economicValue      Float
+  AppCategoryTracker AppCategoryTracker[]
+}
+
+model Sensor {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  description       String
+  riskScore         Float
+  dataTypeId        Int?
+  dataType          DataType?           @relation(fields: [dataTypeId], references: [id])
+  economicValue     Float
+  AppCategorySensor AppCategorySensor[]
+}
+
+// App categories or archetypes (not exhaustive per-app mapping)
+model AppCategory {
+  id                    Int                     @id @default(autoincrement())
+  name                  String                  @unique
+  description           String
+  AppCategoryPermission AppCategoryPermission[]
+  AppCategoryTracker    AppCategoryTracker[]
+  AppCategorySensor     AppCategorySensor[]
+  Scenario              Scenario[]
+}
+
+model AppCategoryPermission {
+  id            Int         @id @default(autoincrement())
+  appCategoryId Int
+  permissionId  Int
+  appCategory   AppCategory @relation(fields: [appCategoryId], references: [id])
+  permission    Permission  @relation(fields: [permissionId], references: [id])
+}
+
+model AppCategoryTracker {
+  id            Int         @id @default(autoincrement())
+  appCategoryId Int
+  trackerId     Int
+  appCategory   AppCategory @relation(fields: [appCategoryId], references: [id])
+  tracker       Tracker     @relation(fields: [trackerId], references: [id])
+}
+
+model AppCategorySensor {
+  id            Int         @id @default(autoincrement())
+  appCategoryId Int
+  sensorId      Int
+  appCategory   AppCategory @relation(fields: [appCategoryId], references: [id])
+  sensor        Sensor      @relation(fields: [sensorId], references: [id])
+}
+
+// User scenarios - educational, not tied to real data
+model Scenario {
+  id            Int          @id @default(autoincrement())
+  title         String
+  description   String
+  riskSummary   String
+  valueSummary  String
+  appCategoryId Int?
+  appCategory   AppCategory? @relation(fields: [appCategoryId], references: [id])
+}
+
+// DataType as separate model for easy reuse & consistent economic values
+model DataType {
+  id               Int          @id @default(autoincrement())
+  name             String       @unique
+  category         String
+  economicValueUsd Float
+  description      String?
+  permission       Permission[]
+  tracker          Tracker[]
+  sensor           Sensor[]
 }
