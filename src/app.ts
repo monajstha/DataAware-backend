@@ -1,9 +1,7 @@
 import { errorHandler } from "@middlewares/errorHandler";
 import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
-// import authRoutes from "@routes/auth.routes";
-// import userRoutes from "@routes/user.routes";
-// import postRoutes from "@routes/post.routes";
+import permissionRoute from "@routes/permission.route";
 
 const app = express();
 
@@ -24,9 +22,7 @@ app.use(
 );
 
 // Routes
-// app.use("/api/auth", authRoutes);
-// app.use("/api/users", userRoutes);
-// app.use("/api/posts", postRoutes);
+app.use("/api/permissions", permissionRoute);
 
 // Handle all unmatched routes
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +31,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next(error);
 });
 
-// // Global error handler
-// app.use(errorHandler);
+// Global error handler
+app.use(errorHandler);
 
 export default app;
