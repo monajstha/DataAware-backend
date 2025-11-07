@@ -10,83 +10,56 @@ datasource db {
 // Core conceptual building blocks
 
 model Permission {
-  id                    Int                     @id @default(autoincrement())
-  name                  String                  @unique
-  description           String
-  sensitivity           String
-  riskScore             Float
-  dataTypeId            Int?
-  dataType              DataType?               @relation(fields: [dataTypeId], references: [id])
-  economicValue         Float
-  AppCategoryPermission AppCategoryPermission[]
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  description   String
+  sensitivity   String
+  riskScore     Float
+  dataTypeId    Int?
+  dataType      DataType? @relation(fields: [dataTypeId], references: [id])
+  economicValue Float
 }
 
 model Tracker {
-  id                 Int                  @id @default(autoincrement())
-  name               String               @unique
-  description        String
-  riskScore          Float
-  dataTypeId         Int?
-  dataType           DataType?            @relation(fields: [dataTypeId], references: [id])
-  economicValue      Float
-  AppCategoryTracker AppCategoryTracker[]
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  description   String
+  riskScore     Float
+  dataTypeId    Int?
+  dataType      DataType? @relation(fields: [dataTypeId], references: [id])
+  economicValue Float
 }
 
 model Sensor {
-  id                Int                 @id @default(autoincrement())
-  name              String              @unique
-  description       String
-  riskScore         Float
-  dataTypeId        Int?
-  dataType          DataType?           @relation(fields: [dataTypeId], references: [id])
-  economicValue     Float
-  AppCategorySensor AppCategorySensor[]
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  description   String
+  riskScore     Float
+  dataTypeId    Int?
+  dataType      DataType? @relation(fields: [dataTypeId], references: [id])
+  economicValue Float
 }
 
 // App categories or archetypes (not exhaustive per-app mapping)
 model AppCategory {
-  id                    Int                     @id @default(autoincrement())
-  name                  String                  @unique
-  description           String
-  AppCategoryPermission AppCategoryPermission[]
-  AppCategoryTracker    AppCategoryTracker[]
-  AppCategorySensor     AppCategorySensor[]
-  Scenario              Scenario[]
-}
-
-model AppCategoryPermission {
-  id            Int         @id @default(autoincrement())
-  appCategoryId Int
-  permissionId  Int
-  appCategory   AppCategory @relation(fields: [appCategoryId], references: [id])
-  permission    Permission  @relation(fields: [permissionId], references: [id])
-}
-
-model AppCategoryTracker {
-  id            Int         @id @default(autoincrement())
-  appCategoryId Int
-  trackerId     Int
-  appCategory   AppCategory @relation(fields: [appCategoryId], references: [id])
-  tracker       Tracker     @relation(fields: [trackerId], references: [id])
-}
-
-model AppCategorySensor {
-  id            Int         @id @default(autoincrement())
-  appCategoryId Int
-  sensorId      Int
-  appCategory   AppCategory @relation(fields: [appCategoryId], references: [id])
-  sensor        Sensor      @relation(fields: [sensorId], references: [id])
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String
+  permissions Json
+  trackers    Json
+  sensors     Json
+  Scenario    Scenario[]
 }
 
 // User scenarios - educational, not tied to real data
 model Scenario {
-  id            Int          @id @default(autoincrement())
-  title         String
-  description   String
-  riskSummary   String
-  valueSummary  String
-  appCategoryId Int?
-  appCategory   AppCategory? @relation(fields: [appCategoryId], references: [id])
+  id              Int          @id @default(autoincrement())
+  title           String
+  description     String
+  riskSummary     String
+  valueSummary    String
+  appCategoryName String?
+  appCategory     AppCategory? @relation(fields: [appCategoryName], references: [name])
 }
 
 // DataType as separate model for easy reuse & consistent economic values

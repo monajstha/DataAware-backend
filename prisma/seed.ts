@@ -906,291 +906,254 @@ async function main() {
   // -----------------------------
   // 5) App Categories
   // -----------------------------
-  // If app categories already exist from createMany earlier, fetch them; otherwise create
-  let appCategories = await prisma.appCategory.findMany();
-  if (appCategories.length === 0) {
-    const cats = [
-      {
-        name: "Social Media",
-        description: "Apps for sharing and social networking.",
-      },
-      {
-        name: "Health & Fitness",
-        description: "Apps tracking biometric and fitness data.",
-      },
-      {
-        name: "Finance",
-        description: "Banking and payment apps handling financial data.",
-      },
-      {
-        name: "Utilities",
-        description:
-          "Device or system utilities requiring functional permissions.",
-      },
-      {
-        name: "Gaming",
-        description: "Games that often embed ad SDKs and analytics.",
-      },
-      {
-        name: "Navigation",
-        description: "Maps and travel apps with background location tracking.",
-      },
-      {
-        name: "E-commerce",
-        description: "Retail and shopping platforms with purchase histories.",
-      },
-      {
-        name: "Productivity",
-        description: "Email, calendar, and office-type apps.",
-      },
-      { name: "Entertainment", description: "Video/music streaming apps." },
-      {
-        name: "News & Info",
-        description:
-          "News apps often track behaviour and display targeted ads.",
-      },
-    ];
-    await prisma.appCategory.createMany({ data: cats });
-    appCategories = await prisma.appCategory.findMany();
-  }
-
-  // helper to lookup IDs
-  const findPerm = (name: string) =>
-    permissions.find((p) => p.name === name)!.id;
-  const findTracker = (name: string) =>
-    trackers.find((t) => t.name === name)!.id;
-  const findSensor = (name: string) => sensors.find((s) => s.name === name)!.id;
-  const findCatId = (name: string) =>
-    appCategories.find((c) => c.name === name)!.id;
-
-  // -----------------------------
-  // 6) AppCategoryPermission mapping (use logical mappings)
-  // -----------------------------
-  const appCategoryPermissionLinks = [
-    // Social Media
+  const appCategories = [
     {
-      appCategoryId: findCatId("Social Media"),
-      permissionId: findPerm("CAMERA"),
+      name: "Social Media",
+      description:
+        "Apps for sharing content, networking, and communication between users.",
+      permissions: [
+        "CAMERA",
+        "MICROPHONE",
+        "ACCESS_FINE_LOCATION",
+        "READ_CONTACTS",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+      ],
+      sensors: ["Accelerometer", "Gyroscope", "Microphone", "Camera"],
+      trackers: [
+        "Google Ads SDK",
+        "Facebook Analytics",
+        "Firebase Analytics",
+        "Appsflyer",
+        "Branch",
+        "Mixpanel",
+      ],
     },
     {
-      appCategoryId: findCatId("Social Media"),
-      permissionId: findPerm("RECORD_AUDIO"),
+      name: "Health & Fitness",
+      description:
+        "Apps that collect health, activity, or biometric information from wearables or sensors.",
+      permissions: [
+        "BODY_SENSORS",
+        "ACCESS_FINE_LOCATION",
+        "READ_CONTACTS",
+        "BLUETOOTH_CONNECT",
+        "READ_EXTERNAL_STORAGE",
+        "INTERNET",
+      ],
+      sensors: [
+        "Heart Rate Sensor",
+        "Accelerometer",
+        "GPS",
+        "Step Counter",
+        "Proximity Sensor",
+      ],
+      trackers: ["Firebase Analytics", "MoEngage", "Flurry", "Mixpanel"],
     },
     {
-      appCategoryId: findCatId("Social Media"),
-      permissionId: findPerm("READ_CONTACTS"),
+      name: "Finance",
+      description:
+        "Banking and digital payment apps dealing with sensitive financial and identity data.",
+      permissions: [
+        "READ_SMS",
+        "READ_CONTACTS",
+        "READ_PHONE_STATE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "RECEIVE_BOOT_COMPLETED",
+        "WRITE_EXTERNAL_STORAGE",
+      ],
+      sensors: ["Accelerometer", "Gyroscope"],
+      trackers: ["Appsflyer", "Adjust", "Firebase Analytics", "Amplitude"],
     },
     {
-      appCategoryId: findCatId("Social Media"),
-      permissionId: findPerm("ACCESS_FINE_LOCATION"),
-    },
-
-    // Health & Fitness
-    {
-      appCategoryId: findCatId("Health & Fitness"),
-      permissionId: findPerm("BODY_SENSORS"),
-    },
-    {
-      appCategoryId: findCatId("Health & Fitness"),
-      permissionId: findPerm("ACCESS_FINE_LOCATION"),
-    },
-
-    // Navigation
-    {
-      appCategoryId: findCatId("Navigation"),
-      permissionId: findPerm("ACCESS_FINE_LOCATION"),
-    },
-    {
-      appCategoryId: findCatId("Navigation"),
-      permissionId: findPerm("ACCESS_BACKGROUND_LOCATION"),
-    },
-
-    // E-commerce
-    {
-      appCategoryId: findCatId("E-commerce"),
-      permissionId: findPerm("READ_EXTERNAL_STORAGE"),
+      name: "Gaming",
+      description:
+        "Games that use ad SDKs and analytics to monetise and track engagement.",
+      permissions: [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "VIBRATE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+      ],
+      sensors: [
+        "Gyroscope",
+        "Accelerometer",
+        "Game Rotation Vector",
+        "Light Sensor",
+      ],
+      trackers: [
+        "Google Ads SDK",
+        "Unity Analytics",
+        "Chartboost",
+        "Vungle",
+        "IronSource",
+        "AdColony",
+        "Appsflyer",
+      ],
     },
     {
-      appCategoryId: findCatId("E-commerce"),
-      permissionId: findPerm("INTERNET"),
-    },
-
-    // Productivity
-    {
-      appCategoryId: findCatId("Productivity"),
-      permissionId: findPerm("READ_CALENDAR"),
-    },
-    {
-      appCategoryId: findCatId("Productivity"),
-      permissionId: findPerm("GET_ACCOUNTS"),
-    },
-
-    // Utilities
-    {
-      appCategoryId: findCatId("Utilities"),
-      permissionId: findPerm("ACCESS_NETWORK_STATE"),
-    },
-    {
-      appCategoryId: findCatId("Utilities"),
-      permissionId: findPerm("WAKE_LOCK"),
-    },
-
-    // Gaming
-    { appCategoryId: findCatId("Gaming"), permissionId: findPerm("INTERNET") },
-    {
-      appCategoryId: findCatId("Gaming"),
-      permissionId: findPerm("ACCESS_FINE_LOCATION"),
-    },
-
-    // Entertainment
-    {
-      appCategoryId: findCatId("Entertainment"),
-      permissionId: findPerm("INTERNET"),
+      name: "Navigation",
+      description:
+        "Location-based apps that provide maps, directions, or travel recommendations.",
+      permissions: [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "INTERNET",
+        "ACCESS_WIFI_STATE",
+      ],
+      sensors: [
+        "GPS",
+        "Accelerometer",
+        "Gyroscope",
+        "Magnetometer",
+        "Barometer",
+      ],
+      trackers: ["Firebase Analytics", "Google Ads SDK", "Adjust"],
     },
     {
-      appCategoryId: findCatId("Entertainment"),
-      permissionId: findPerm("ACCESS_COARSE_LOCATION"),
+      name: "E-commerce",
+      description:
+        "Shopping and retail apps collecting purchase and browsing behaviour for targeting.",
+      permissions: [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "READ_CONTACTS",
+        "READ_PHONE_STATE",
+        "ACCESS_FINE_LOCATION",
+        "WRITE_EXTERNAL_STORAGE",
+      ],
+      sensors: ["Accelerometer", "Gyroscope", "Light Sensor"],
+      trackers: [
+        "Facebook Analytics",
+        "Google Ads SDK",
+        "Appsflyer",
+        "Branch",
+        "Mixpanel",
+        "Flurry",
+      ],
     },
-
-    // News & Info
     {
-      appCategoryId: findCatId("News & Info"),
-      permissionId: findPerm("ACCESS_COARSE_LOCATION"),
+      name: "Productivity",
+      description:
+        "Tools for communication, scheduling, and document management.",
+      permissions: [
+        "READ_CALENDAR",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "READ_CONTACTS",
+      ],
+      sensors: ["Accelerometer", "Proximity Sensor"],
+      trackers: ["Firebase Analytics", "Amplitude", "Mixpanel"],
     },
     {
-      appCategoryId: findCatId("News & Info"),
-      permissionId: findPerm("INTERNET"),
+      name: "Entertainment",
+      description:
+        "Streaming apps providing music, video, or multimedia content.",
+      permissions: [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+      ],
+      sensors: ["Accelerometer", "Gyroscope", "Microphone"],
+      trackers: [
+        "Google Ads SDK",
+        "Facebook Analytics",
+        "Appsflyer",
+        "Adjust",
+        "Mixpanel",
+        "Flurry",
+      ],
+    },
+    {
+      name: "News & Information",
+      description:
+        "News and magazine apps that collect behavioural data for targeted content and ads.",
+      permissions: [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "ACCESS_COARSE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+      ],
+      sensors: ["Accelerometer", "Light Sensor"],
+      trackers: [
+        "Google Ads SDK",
+        "Facebook Analytics",
+        "MoEngage",
+        "Flurry",
+        "Branch",
+        "OneSignal",
+      ],
+    },
+    {
+      name: "Education",
+      description:
+        "Learning platforms that may require microphone, camera, or location for interactive lessons.",
+      permissions: [
+        "CAMERA",
+        "MICROPHONE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+      ],
+      sensors: ["Camera", "Microphone", "Accelerometer", "Light Sensor"],
+      trackers: ["Firebase Analytics", "Amplitude", "Mixpanel", "OneSignal"],
+    },
+    {
+      name: "Utilities",
+      description:
+        "Device tools that require system-level permissions for functionality.",
+      permissions: [
+        "CHANGE_WIFI_STATE",
+        "ACCESS_NETWORK_STATE",
+        "READ_PHONE_STATE",
+        "WRITE_EXTERNAL_STORAGE",
+        "INTERNET",
+        "BLUETOOTH_CONNECT",
+      ],
+      sensors: ["Proximity Sensor", "Light Sensor", "Accelerometer"],
+      trackers: ["Firebase Analytics", "Localytics"],
+    },
+    {
+      name: "Travel & Transport",
+      description:
+        "Travel booking and ride-hailing apps with access to precise location and contact data.",
+      permissions: [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "READ_CONTACTS",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "READ_PHONE_STATE",
+      ],
+      sensors: ["GPS", "Accelerometer", "Gyroscope", "Barometer"],
+      trackers: [
+        "Google Ads SDK",
+        "Appsflyer",
+        "Facebook Analytics",
+        "Adjust",
+        "Flurry",
+      ],
     },
   ];
-
-  // Insert permission links (ignore duplicates)
-  for (const link of appCategoryPermissionLinks) {
-    await prisma.appCategoryPermission.create({
-      data: link,
-    });
-  }
-
-  // -----------------------------
-  // 7) AppCategoryTracker mapping
-  // -----------------------------
-  const appCategoryTrackerLinks = [
-    // Social Media
-    {
-      appCategoryId: findCatId("Social Media"),
-      trackerId: findTracker("Facebook Analytics"),
-    },
-    {
-      appCategoryId: findCatId("Social Media"),
-      trackerId: findTracker("Google Ads SDK"),
-    },
-
-    // E-commerce
-    {
-      appCategoryId: findCatId("E-commerce"),
-      trackerId: findTracker("Firebase Analytics"),
-    },
-    {
-      appCategoryId: findCatId("E-commerce"),
-      trackerId: findTracker("Appsflyer"),
-    },
-
-    // Gaming
-    {
-      appCategoryId: findCatId("Gaming"),
-      trackerId: findTracker("Unity Analytics"),
-    },
-    { appCategoryId: findCatId("Gaming"), trackerId: findTracker("AdColony") },
-
-    // Navigation
-    {
-      appCategoryId: findCatId("Navigation"),
-      trackerId: findTracker("Google Ads SDK"),
-    },
-    {
-      appCategoryId: findCatId("Navigation"),
-      trackerId: findTracker("Firebase Analytics"),
-    },
-
-    // Health & Fitness
-    {
-      appCategoryId: findCatId("Health & Fitness"),
-      trackerId: findTracker("Mixpanel"),
-    },
-
-    // News & Info
-    {
-      appCategoryId: findCatId("News & Info"),
-      trackerId: findTracker("Google Ads SDK"),
-    },
-  ];
-
-  for (const link of appCategoryTrackerLinks) {
-    await prisma.appCategoryTracker.create({
-      data: link,
-    });
-  }
-
-  // -----------------------------
-  // 8) AppCategorySensor mapping
-  // -----------------------------
-  const appCategorySensorLinks = [
-    // Social Media: camera + mic
-    {
-      appCategoryId: findCatId("Social Media"),
-      sensorId: findSensor("Camera"),
-    },
-    {
-      appCategoryId: findCatId("Social Media"),
-      sensorId: findSensor("Microphone"),
-    },
-
-    // Health & Fitness: heart + steps
-    {
-      appCategoryId: findCatId("Health & Fitness"),
-      sensorId: findSensor("Heart Rate Sensor"),
-    },
-    {
-      appCategoryId: findCatId("Health & Fitness"),
-      sensorId: findSensor("Step Counter"),
-    },
-
-    // Navigation: GPS + Accelerometer
-    { appCategoryId: findCatId("Navigation"), sensorId: findSensor("GPS") },
-    {
-      appCategoryId: findCatId("Navigation"),
-      sensorId: findSensor("Accelerometer"),
-    },
-
-    // Gaming: Gyroscope + Rotation
-    { appCategoryId: findCatId("Gaming"), sensorId: findSensor("Gyroscope") },
-    {
-      appCategoryId: findCatId("Gaming"),
-      sensorId: findSensor("Rotation Vector Sensor"),
-    },
-
-    // Utilities: Pressure, ambient sensors
-    {
-      appCategoryId: findCatId("Utilities"),
-      sensorId: findSensor("Barometer"),
-    },
-    {
-      appCategoryId: findCatId("Utilities"),
-      sensorId: findSensor("Proximity Sensor"),
-    },
-
-    // Entertainment: microphone for voice search
-    {
-      appCategoryId: findCatId("Entertainment"),
-      sensorId: findSensor("Microphone"),
-    },
-
-    // News & Info
-    { appCategoryId: findCatId("News & Info"), sensorId: findSensor("GPS") },
-  ];
-
-  for (const link of appCategorySensorLinks) {
-    await prisma.appCategorySensor.create({
-      data: link,
+  for (const cat of appCategories) {
+    await prisma.appCategory.create({
+      data: {
+        name: cat.name,
+        description: cat.description,
+        permissions: cat.permissions,
+        trackers: cat.trackers,
+        sensors: cat.sensors,
+      },
     });
   }
 
@@ -1254,7 +1217,7 @@ async function main() {
         description: s.description,
         riskSummary: s.riskSummary,
         valueSummary: s.valueSummary,
-        appCategoryId: findCatId(s.appCategoryName),
+        appCategoryName: s.appCategoryName,
       },
     });
   }
