@@ -5,6 +5,8 @@ import permissionRoute from "@routes/permission.route";
 import trackerRoute from "@routes/tracker.route";
 import sensorRoute from "@routes/sensor.route";
 import datatypeRoute from "@routes/datatype.route";
+import appCategoryRoute from "@routes/appCategory.route";
+import scenarioRoute from "@routes/scenario.route";
 
 const app = express();
 
@@ -29,6 +31,8 @@ app.use("/api/permissions", permissionRoute);
 app.use("/api/trackers", trackerRoute);
 app.use("/api/sensors", sensorRoute);
 app.use("/api/datatypes", datatypeRoute);
+app.use("/api/appcategories", appCategoryRoute);
+app.use("/api/scenarios", scenarioRoute);
 
 // Handle all unmatched routes
 app.use((req: Request, res: Response, next: NextFunction) => {
