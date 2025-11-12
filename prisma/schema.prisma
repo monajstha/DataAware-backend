@@ -10,34 +10,30 @@ datasource db {
 // Core conceptual building blocks
 
 model Permission {
-  id            Int       @id @default(autoincrement())
-  name          String    @unique
+  id            Int    @id @default(autoincrement())
+  category      String
+  name          String @unique
   description   String
+  protectionTip String
   sensitivity   String
   riskScore     Float
-  dataTypeId    Int?
-  dataType      DataType? @relation(fields: [dataTypeId], references: [id])
-  economicValue Float
 }
 
 model Tracker {
-  id            Int       @id @default(autoincrement())
-  name          String    @unique
+  id            Int    @id @default(autoincrement())
+  name          String @unique
+  purpose       String
   description   String
+  protectionTip String
   riskScore     Float
-  dataTypeId    Int?
-  dataType      DataType? @relation(fields: [dataTypeId], references: [id])
-  economicValue Float
 }
 
 model Sensor {
-  id            Int       @id @default(autoincrement())
-  name          String    @unique
-  description   String
-  riskScore     Float
-  dataTypeId    Int?
-  dataType      DataType? @relation(fields: [dataTypeId], references: [id])
-  economicValue Float
+  id                   Int    @id @default(autoincrement())
+  name                 String @unique
+  description          String
+  riskScore            Float
+  possibleInterference String
 }
 
 // App categories or archetypes (not exhaustive per-app mapping)
@@ -64,12 +60,12 @@ model Scenario {
 
 // DataType as separate model for easy reuse & consistent economic values
 model DataType {
-  id               Int          @id @default(autoincrement())
-  name             String       @unique
+  id               Int     @id @default(autoincrement())
+  name             String  @unique
   category         String
   economicValueUsd Float
   description      String?
-  permission       Permission[]
-  tracker          Tracker[]
-  sensor           Sensor[]
+  riskLevel        String
+  commonUses       String
+  protectionTip    String
 }
