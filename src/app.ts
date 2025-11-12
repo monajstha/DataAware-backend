@@ -1,7 +1,12 @@
-import { errorHandler } from "@middlewares/errorHandler";
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import permissionRoute from "@routes/permission.route";
+import trackerRoute from "@routes/tracker.route";
+import sensorRoute from "@routes/sensor.route";
+import datatypeRoute from "@routes/datatype.route";
+import appCategoryRoute from "@routes/appCategory.route";
+import scenarioRoute from "@routes/scenario.route";
+import { errorHandler } from "@middlewares/errorHandler";
 
 const app = express();
 
@@ -13,6 +18,7 @@ app.use(express.urlencoded({ extended: true })); // reads and turns html form su
 app.use(
   cors({
     origin: [
+      "http://localhost:5174", // your frontend url
       "http://localhost:5173", // your frontend url
       // 'https://mywebsite.com' // your production url optional
     ],
@@ -23,6 +29,11 @@ app.use(
 
 // Routes
 app.use("/api/permissions", permissionRoute);
+app.use("/api/trackers", trackerRoute);
+app.use("/api/sensors", sensorRoute);
+app.use("/api/dataValue", datatypeRoute);
+app.use("/api/appcategories", appCategoryRoute);
+app.use("/api/scenarios", scenarioRoute);
 
 // Handle all unmatched routes
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -2,7 +2,7 @@ import Send from "@utils/response.utils";
 import { prisma } from "@db/index";
 import { Request, Response } from "express";
 
-const getPermissions = async (req: Request, res: Response) => {
+const getSensors = async (req: Request, res: Response) => {
   try {
     const { page = "1", limit = "10" } = req?.query;
 
@@ -11,24 +11,24 @@ const getPermissions = async (req: Request, res: Response) => {
 
     const skip = (pageNumber - 1) * pageSize;
 
-    const [permissions, totalPermissions] = await Promise.all([
-      prisma.permission.findMany({
+    const [sensors, totalSensors] = await Promise.all([
+      prisma.sensor.findMany({
         orderBy: { id: "asc" },
         skip,
         take: pageSize,
       }),
-      prisma.permission.count(),
-      // If permissions don't exist, return an error
+      prisma.sensor.count(),
+      // If sensors don't exist, return an error
     ]);
 
-    const totalPages = Math.ceil(totalPermissions / pageSize);
-    // Return a successful response with permissions
+    const totalPages = Math.ceil(totalSensors / pageSize);
+    // Return a successful response with sensors
     return Send.success(
       res,
       {
-        permissions,
+        sensors,
         pagination: {
-          totalPermissions,
+          totalSensors,
           totalPages,
           currentPage: pageNumber,
           pageSize,
@@ -36,17 +36,17 @@ const getPermissions = async (req: Request, res: Response) => {
           hasPrevPage: pageNumber > 1,
         },
       },
-      "Permissions successfully retrieved"
+      "Sensors successfully retrieved"
     );
   } catch (error) {
     // If any error occurs, return a generic error response
-    console.error("Failed to get permissions:", error); // Log the error for debugging
+    console.error("Failed to get sensors:", error); // Log the error for debugging
     return Send.error(res, null, "Something went wrong.");
   }
 };
 
-const permissionController = {
-  getPermissions,
+const sensorsController = {
+  getSensors,
 };
 
-export default permissionController;
+export default sensorsController;
