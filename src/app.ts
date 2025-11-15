@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5174", // your frontend url
-      "http://data-aware.netlify.app", // your production url optional
+      "https://data-aware.netlify.app", // your production url optional
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
