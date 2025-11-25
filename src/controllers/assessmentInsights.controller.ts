@@ -29,6 +29,7 @@ interface SessionData {
     ageRange: string | null;
     techProficiency: string | null;
     priorPrivacyKnowledge: string | null;
+    referralSource: string | null;
   };
   userName: string | null;
   feedback: string | null;
@@ -111,7 +112,7 @@ const submitAssessmentInsight = async (req: Request, res: Response) => {
       techProficiency: sessionData.userContext.techProficiency ?? null,
       priorPrivacyKnowledge:
         sessionData.userContext.priorPrivacyKnowledge ?? null,
-      referralSource: null,
+      referralSource: sessionData.userContext.referralSource ?? null,
     };
 
     // Insert into database
