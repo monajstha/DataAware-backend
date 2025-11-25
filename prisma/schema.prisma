@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // Core conceptual building blocks
@@ -68,4 +68,44 @@ model DataType {
   riskLevel        String
   commonUses       String
   protectionTip    String
+}
+
+model AssessmentInsight {
+  id             Int      @id @default(autoincrement())
+  sessionId      String   @unique @db.Uuid
+  startTimestamp DateTime
+  createdAt      DateTime @default(now())
+
+  // Assessment Data
+  preScore     Int?
+  preAnswers   Json? // Array of answer indices
+  preTimeSpent Int? // seconds
+  preTimestamp DateTime?
+
+  postScore     Int?
+  postAnswers   Json? // Array of answer indices
+  postTimeSpent Int? // seconds
+  postTimestamp DateTime?
+
+  improvement Int? // calculated: postScore - preScore
+
+  // Learning Behavior
+  modulesCompleted Json // Array of module IDs
+  totalTimeSpent   Int  @default(0) // seconds
+  timePerModule    Json // Object: { moduleId: timeInSeconds }
+  quizzesAttempted Int  @default(0)
+
+  // Optional User Data
+  userName String? @db.VarChar(255)
+  feedback String? @db.Text
+
+  // User Context (Demographics)
+  ageRange              String? @db.VarChar(20)
+  techProficiency       String? @db.VarChar(50)
+  priorPrivacyKnowledge String? @db.VarChar(50)
+  referralSource        String? @db.Text
+
+  @@index([sessionId])
+  @@index([createdAt])
+  @@map("assessment_insights")
 }

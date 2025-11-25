@@ -7,6 +7,7 @@ import datatypeRoute from "@routes/datatype.route";
 import appCategoryRoute from "@routes/appCategory.route";
 import scenarioRoute from "@routes/scenario.route";
 import { errorHandler } from "@middlewares/errorHandler";
+import assessmentInsightsRoute from "@routes/assessmentInsights.route";
 
 const app = express();
 
@@ -18,8 +19,8 @@ app.use(express.urlencoded({ extended: true })); // reads and turns html form su
 app.use(
   cors({
     origin: [
-      "http://localhost:5174", // your frontend url
-      "https://data-aware.netlify.app", // your production url optional
+      "http://localhost:5174", // frontend url
+      "https://data-aware.netlify.app", // production url
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
@@ -33,6 +34,7 @@ app.use("/api/sensors", sensorRoute);
 app.use("/api/dataValue", datatypeRoute);
 app.use("/api/appcategories", appCategoryRoute);
 app.use("/api/scenarios", scenarioRoute);
+app.use("/api/assessment-insights", assessmentInsightsRoute);
 
 // Handle all unmatched routes
 app.use((req: Request, res: Response, next: NextFunction) => {

@@ -1,5 +1,5 @@
 import Send from "@utils/response.utils";
-import { prisma } from "@db/index";
+import prisma from "@lib/prisma";
 import { Request, Response } from "express";
 
 const getTrackers = async (req: Request, res: Response) => {
