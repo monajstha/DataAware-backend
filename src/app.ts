@@ -19,8 +19,8 @@ app.use(express.urlencoded({ extended: true })); // reads and turns html form su
 app.use(
   cors({
     origin: [
-      "http://localhost:5174", // frontend url
-      "https://data-aware.netlify.app", // production url
+      process.env.LOCAL_URL as string, // frontend url
+      process.env.CLIENT_URL as string, // production url
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
