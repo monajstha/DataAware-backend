@@ -27,6 +27,16 @@ app.use(
   })
 );
 
+// Health Check Endpoint
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({
+    status: "ok",
+    service: "DataAware API",
+    version: "1.0.0",
+    message: "API is running. Use /api/* endpoints.",
+  });
+});
+
 // Routes
 app.use("/api/permissions", permissionRoute);
 app.use("/api/trackers", trackerRoute);
