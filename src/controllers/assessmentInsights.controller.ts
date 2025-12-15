@@ -171,8 +171,6 @@ const deleteAssessmentInsight = async (req: Request, res: Response) => {
   }
 };
 
-//TODO: Add a controller to generate the data insights into a CSV report for download
-
 const assessmentInsightsController = {
   submitAssessmentInsight,
   deleteAssessmentInsight,
