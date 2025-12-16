@@ -15,19 +15,19 @@
     "typeRoots": ["./src/types", "./node_modules/@types"],
 
     "baseUrl": "./src",
-    "paths": {
-      "@config/*": ["config/*"],
-      "@controllers/*": ["controllers/*"],
-      "@routes/*": ["routes/*"],
-      "@middlewares/*": ["middlewares/*"],
-      "@views/*": ["views/*"],
-      "@styles/*": ["/public/*"],
-      "@db/*": ["db/*"],
-      "@utils/*": ["utils/*"],
-      "@lib/*": ["lib/*"],
-      "@types/*": ["types/*"],
-      "@interface/*": ["interface/*"]
-    },
+    // "paths": {
+    //   "@config/*": ["config/*"],
+    //   "@controllers/*": ["controllers/*"],
+    //   "@routes/*": ["routes/*"],
+    //   "@middlewares/*": ["middlewares/*"],
+    //   "@views/*": ["views/*"],
+    //   "@styles/*": ["/public/*"],
+    //   "@db/*": ["db/*"],
+    //   "@utils/*": ["utils/*"],
+    //   "@lib/*": ["lib/*"],
+    //   "@types/*": ["types/*"],
+    //   "@interface/*": ["interface/*"]
+    // },
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],

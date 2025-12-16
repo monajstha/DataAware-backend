@@ -1,5 +1,5 @@
-import { createRouter, RouteConfig } from "./router";
-import datatypesController from "@controllers/datatypes.controller";
+import { createRouter, RouteConfig } from "./router.js";
+import datatypesController from "../controllers/datatypes.controller.js";
 
 const routes: RouteConfig[] = [
   {

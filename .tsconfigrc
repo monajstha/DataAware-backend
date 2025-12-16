@@ -1,0 +1,38 @@
+{
+  "resolveFullPaths": true,
+  "replacers": {
+    "@config/*": [
+      "./dist/src/config/*"
+    ],
+    "@controllers/*": [
+      "./dist/src/controllers/*"
+    ],
+    "@routes/*": [
+      "./dist/src/routes/*"
+    ],
+    "@middlewares/*": [
+      "./dist/src/middlewares/*"
+    ],
+    "@views/*": [
+      "./dist/src/views/*"
+    ],
+    "@styles/*": [
+      "./dist/src/public/*"
+    ],
+    "@db/*": [
+      "./dist/src/db/*"
+    ],
+    "@utils/*": [
+      "./dist/src/utils/*"
+    ],
+    "@lib/*": [
+      "./dist/src/lib/*"
+    ],
+    "@types/*": [
+      "./dist/src/types/*"
+    ],
+    "@interface/*": [
+      "./dist/src/interface/*"
+    ]
+  }
+}

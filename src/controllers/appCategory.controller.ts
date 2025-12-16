@@ -1,5 +1,5 @@
-import Send from "@utils/response.utils";
-import prisma from "@lib/prisma";
+import Send from "../utils/response.utils.js";
+import prisma from "../lib/prisma.js";
 import { Request, Response } from "express";
 
 const getAppCategories = async (req: Request, res: Response) => {

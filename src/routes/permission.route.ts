@@ -1,5 +1,5 @@
-import permissionsController from "@controllers/permissions.controller";
-import { createRouter, RouteConfig } from "./router";
+import permissionsController from "../controllers/permissions.controller.js";
+import { createRouter, RouteConfig } from "./router.js";
 
 const routes: RouteConfig[] = [
   {

@@ -1,5 +1,5 @@
-import { createRouter, RouteConfig } from "./router";
-import sensorsController from "@controllers/sensors.controller";
+import { createRouter, RouteConfig } from "./router.js";
+import sensorsController from "../controllers/sensors.controller.js";
 
 const routes: RouteConfig[] = [
   {

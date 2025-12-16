@@ -1,5 +1,5 @@
-import { createRouter, RouteConfig } from "./router";
-import trakcersController from "@controllers/trackers.controller";
+import { createRouter, RouteConfig } from "./router.js";
+import trakcersController from "../controllers/trackers.controller.js";
 
 const routes: RouteConfig[] = [
   {

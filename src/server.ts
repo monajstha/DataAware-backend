@@ -1,5 +1,5 @@
-import app from "./app";
-import appConfig from "./config/app.config";
+import app from "./app.js";
+import appConfig from "./config/app.config.js";
 
 app.listen(appConfig.port, () => {
   console.log(`[server]: Server is running on ${appConfig.port}`);

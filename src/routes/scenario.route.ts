@@ -1,5 +1,5 @@
-import { createRouter, RouteConfig } from "./router";
-import scenariosController from "@controllers/scenerios.controller";
+import { createRouter, RouteConfig } from "./router.js";
+import scenariosController from "../controllers/scenarios.controller.js";
 
 const routes: RouteConfig[] = [
   {

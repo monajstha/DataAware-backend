@@ -1,13 +1,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import permissionRoute from "@routes/permission.route";
-import trackerRoute from "@routes/tracker.route";
-import sensorRoute from "@routes/sensor.route";
-import datatypeRoute from "@routes/datatype.route";
-import appCategoryRoute from "@routes/appCategory.route";
-import scenarioRoute from "@routes/scenario.route";
-import { errorHandler } from "@middlewares/errorHandler";
-import assessmentInsightsRoute from "@routes/assessmentInsights.route";
+import permissionRoute from "./routes/permission.route.js";
+import trackerRoute from "./routes/tracker.route.js";
+import sensorRoute from "./routes/sensor.route.js";
+import datatypeRoute from "./routes/datatype.route.js";
+import appCategoryRoute from "./routes/appCategory.route.js";
+import scenarioRoute from "./routes/scenario.route.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import assessmentInsightsRoute from "./routes/assessmentInsights.route.js";
 
 const app = express();
 

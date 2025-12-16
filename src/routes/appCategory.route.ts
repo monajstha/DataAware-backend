@@ -1,5 +1,5 @@
-import { createRouter, RouteConfig } from "./router";
-import appCategoriesController from "@controllers/appCategory.controller";
+import { createRouter, RouteConfig } from "./router.js";
+import appCategoriesController from "../controllers/appCategory.controller.js";
 
 const routes: RouteConfig[] = [
   {

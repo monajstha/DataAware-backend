@@ -1,5 +1,5 @@
-import { createRouter, RouteConfig } from "./router";
-import assessmentInsightsController from "@controllers/assessmentInsights.controller";
+import { createRouter, RouteConfig } from "./router.js";
+import assessmentInsightsController from "../controllers/assessmentInsights.controller.js";
 
 const routes: RouteConfig[] = [
   {
